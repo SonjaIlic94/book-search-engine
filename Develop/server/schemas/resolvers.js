@@ -29,26 +29,40 @@ const resolvers = {
         //login, returns an auth type
         login: async (parent, { email, password }) => {
             const user = await User.findOne({ email });
-
             if (!user) {
                 throw new AuthenticationError('Incorrect credentials');
             }
-
             const correctPw = await user.isCorrectPassword(password);
-
             if (!correctPw) {
                 throw new AuthenticationError('Incorrect credentials');
             }
-
             const token = signToken(user);
             return { token, user };
         },
 
-        //saveBook, accepts a book authos arry, description, title, bookId, image and link
+        //saveBook, accepts a bb description, title, bookId, image and link
         //as params, returns a User (use "input")
-
+        saveBook: async (parent, { bookData }, context) => {
+            if (context.user) {
+                const updateUser = await User.findByIdAndUpdate(
+                    ({ _id: context.user._id },
+                        { $push: { savedBooks: bookData } },
+                        { new: true })
+                )
+                return updateUser;
+            }
+        },
         //removeBook, accepts bookId as a param, returns User type
-
+        removeBook: async (parent, { }, context) => {
+            if (context.user) {
+                const updateUser = await User.findByIdAndUpdate(
+                    ({ _id: context.user._id },
+                        { $pull: { savedBooks: bookData } },
+                        { new: true })
+                )
+                return updateUser
+            }
+        }
     }
 };
 
