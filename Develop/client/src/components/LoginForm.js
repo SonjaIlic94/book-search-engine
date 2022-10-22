@@ -10,7 +10,8 @@ const LoginForm = () => {
   const [userFormData, setUserFormData] = useState({ email: '', password: '' });
   const [validated] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
-  const [loginUser, { err }] = useMutation(LOGIN_USER)
+  const [loginUser, { err }] = useMutation(LOGIN_USER);
+
   useEffect(() => {
     if (err) {
       setShowAlert(true)
