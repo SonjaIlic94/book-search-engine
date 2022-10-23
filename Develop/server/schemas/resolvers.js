@@ -36,11 +36,11 @@ const resolvers = {
         },
         //saveBook, accepts a bb description, title, bookId, image and link
         //as params, returns a User (use "input")
-        saveBook: async (parent, { bookData }, context) => {
+        saveBook: async (parent, { addBook }, context) => {
             if (context.user) {
                 const updateUser = await User.findByIdAndUpdate(
                     ({ _id: context.user._id },
-                        { $push: { savedBooks: bookData } },
+                        { $push: { savedBooks: addBook } },
                         { new: true })
                 )
                 return updateUser;
