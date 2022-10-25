@@ -23,6 +23,10 @@ app.use(express.json());
 
 // Create a new instance of an Apollo server with the GraphQL schema
 const startApolloServer = async (typeDefs, resolvers) => {
+  app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/build/index.html'));
+  });
+
   await server.start();
   // integrate our Apollo server with the Express application as middleware
   server.applyMiddleware({ app });
@@ -31,9 +35,7 @@ const startApolloServer = async (typeDefs, resolvers) => {
     app.use(express.static(path.join(__dirname, '../client/build')));
   }
 
-  app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../client/build/index.html'));
-  });
+
   db.once('open', () => {
     app.listen(PORT, () => {
       console.log(`API server running on port ${PORT}!`);
