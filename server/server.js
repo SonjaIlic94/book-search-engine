@@ -4,6 +4,7 @@ const { ApolloServer } = require('apollo-server-express');
 const { typeDefs, resolvers } = require('./schemas');
 //middleware
 const { authMiddleware } = require('./utils/auth');
+const path = require('path')
 
 // import our typeDefs and resolvers;
 const db = require('./config/connection');
@@ -31,7 +32,7 @@ const startApolloServer = async (typeDefs, resolvers) => {
     app.use(express.static(path.join(__dirname, '../client/build')));
   }
 
-  app.get('*', (req, res) => {
+  app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../client/build/index.html'));
   });
   db.once('open', () => {
